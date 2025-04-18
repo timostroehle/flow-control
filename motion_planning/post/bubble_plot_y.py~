@@ -1,0 +1,27 @@
+### y
+set terminal epslatex lw 2 size 8cm,7cm "Helvetica,8pt" #color colortext
+set output './figures/y_var_inv.tex'
+ 
+set xlabel '\(t\;[ms]\)' #offset 0,1,0
+set ylabel '\(y\;[mm^{3}/s]\)' #offset 3,0,0
+
+# set border lw 1
+set key t l spacing 1.5
+
+set yrange [-1:20]
+# set format y "%.3f" #"10^{%.0T}"
+set ytics (0,5,10,15,20)
+
+set xrange [0:40]
+# set format x "%.0f"
+t0=3.948046182409354309
+set xtics (0,t0,10,20,30,40) 
+
+set grid ytics, xtics
+
+plot './data/data_solution/io/qs1_1.dat' using ($1*1000):2 w lp lt 8 pt 4 ps 1 pi 20 lw 1 dt 1 title '$y_{1}(t) = y(t)$',\
+     './data/data_solution/io/qs1_2.dat' using ($1*1000):2 w lp lt 8 pt 6 ps 1 pi 20 lw 1 dt 1 title '$y_{2}(t) = 2y(t)$',\
+     './data/data_solution/io/qs1_3.dat' using ($1*1000):2 w lp lt 8 pt 8 ps 1 pi 20 lw 1 dt 1 title '$y_{3}(t) = 3y(t)$',\
+     './data/data_solution/io/qs1_4.dat' using ($1*1000):2 w lp lt 8 pt 10 ps 1 pi 20 lw 1 dt 1 title '$y_{4}(t) = 4y(t)$',\
+     './data/data_solution/io/qs1_5.dat' using ($1*1000):2 w lp lt 8 pt 12 ps 1 pi 20 lw 1 dt 1 title '$y_{5}(t) = 0.5y(t)$'
+#pause -1

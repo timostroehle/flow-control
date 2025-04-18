@@ -1,0 +1,127 @@
+"""......................................................................................
+bubble init
+......................................................................................"""
+import sys
+import scipy
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+# from sympy import *
+# init_printing()
+np.set_printoptions(precision=3, threshold=1e5, linewidth=300)
+
+class Init:
+    def __init__(self):
+        self.ns = int(sys.argv[1])  # choose even number (-> centered bubble)
+        self.nt = int(sys.argv[2])
+        self.L = 1 #10#1.0
+        self.T = 5 #1.0#10
+        self.rho = 1.0e-6 #1.0
+        self.a0 = 0.1 #1#3.0 #1.0#0.05#0.05#0.15
+        self.q0 = 0.0
+        self.c0 = 5e2 #6000#1.0#2.0#0.47287#0.6#1.0#1.0#1.8#1.4
+        self.hs = self.L/self.ns
+
+    def elspos(self):
+        elspos = [[k+2*self.ns+1,k+2*self.ns+2] for k in range(0,2*self.ns)]
+        elspos = np.array(elspos).reshape(-1,2)
+        return elspos
+
+    def elsneg(self):
+        elsneg = [[k+1,k+2*self.ns+1] for k in range(0,2*self.ns)]
+        elsneg = np.array(elsneg).reshape(-1,2)
+        return elsneg
+
+    def bc(self):
+        bc = [k for k in range(0,4*(2*self.ns+1))]
+        bc += [4*(2*self.ns+1),4*(4*self.ns+1),4*(4*self.ns+1)+3]
+        return bc
+
+    def bc_trj(self):
+        bc = [4*self.ns+1]
+        return bc
+
+    # def beta(self,s):
+    #     """ gaussian distribution, maximum at s=0 """
+    #     sig = 0.1#1.0 #0.1 #5#*np.sqrt(2*np.pi)
+    #     s0 = 0.0
+    #     b1 = 0.1*(1/10)*(1/sig)*np.exp(-1.0*(((s-s0)**2)/(sig**2))) #+ 5
+    #     """ gaussian distribution of stiffness """
+    #     sig = 0.25#2.0 #0.25 #5#*np.sqrt(2*np.pi)
+    #     s0 = 0.5#5.0#0.5
+    #     b = -0.05*(1/10)*(1/sig)*np.exp(-1.0*(((s-s0)**2)/(sig**2))) + 0.05 + b1  # 2.5
+    #     """ constant distribution of stiffness """
+    #     #b = 2
+    #     return b
+
+    def beta(self,s):
+        """ gaussian distribution, maximum at s=0 """
+        sig = 0.1#1.0 #0.1 #5#*np.sqrt(2*np.pi)
+        s0 = 0.0
+        b1 = 0.05*(1/10)*(1/sig)*np.exp(-1.0*(((s-s0)**2)/(sig**2))) + 0.2#+ 5
+        """ gaussian distribution of stiffness """
+        sig = 0.25#2.0 #0.25 #5#*np.sqrt(2*np.pi)
+        s0 = 0.5#5.0#0.5
+        b = -0.5*(1/10)*(1/sig)*np.exp(-1.0*(((s-s0)**2)/(sig**2))) + 0.3 + b1 # 2.5
+        """ constant distribution of stiffness """
+        #b = 2
+        return (1/(0+1))*b+ 0
+    
+    def c(self,s,q,a):
+        b = self.beta(s)
+        c = q/a - (self.rho**(-0.5))*0.5*np.sqrt(2)*np.sqrt(b)*a**0.25
+        """ alternative: c = const. in s  """
+        #c = self.c0
+        return c
+
+    def xinit(self):
+        x0 = np.loadtxt("./init/data/data_solution/x0.dat")
+        x1 = np.array(x0)
+        for i in range(1,len(x0)):
+            hs = x0[i,0] - x0[i-1,0]
+            ht = -hs/self.c(x0[i,0],x0[i,2],x0[i,3])
+            x1[i-1,0] = x0[i-1,0]
+            x1[i-1,1] = x0[i,1] + ht
+            x1[i-1,2] = x0[i-1,2]
+            x1[i-1,3] = x0[i-1,3]
+        x1[i,0] = x0[i,0]
+        x1[i,1] = x0[i,1] + 2*ht
+        x1[i,2] = x0[i,2]
+        x1[i,3] = x0[i,3]
+        xinit = np.append(x0,x1,axis=0)
+        return xinit
+
+    def param(self):
+        ns = self.ns
+        nt = self.nt
+        c0 = self.c0
+        rho = self.rho
+        param = np.array([ns,nt,c0,rho])
+        return param
+    
+    
+init = Init()
+
+x = init.xinit()
+""" plot initial characteristic net  """
+for j in range(0,len(init.elspos()[:,0])):
+    mpos = init.elspos()[j,0]
+    npos = init.elspos()[j,1]
+    mneg = init.elsneg()[j,0]
+    nneg = init.elsneg()[j,1]
+    plt.plot([x[mpos,0],x[npos,0]],[x[mpos,1],x[npos,1]],"-",
+                             color="tab:blue",linewidth=0.5)
+    plt.plot([x[mneg,0],x[nneg,0]],[x[mneg,1],x[nneg,1]],"-",
+                             color="tab:blue",linewidth=0.5)
+plt.show()
+
+
+
+np.savetxt("./data/data_init/elspos.dat",init.elspos(),fmt='%i')
+np.savetxt("./data/data_init/elsneg.dat",init.elsneg(),fmt='%i')
+np.savetxt("./data/data_init/xinit.dat",init.xinit())
+np.savetxt("./data/data_init/bc.dat",init.bc(),fmt='%i')
+np.savetxt("./data/data_init/bc_trj.dat",init.bc_trj(),fmt='%i')
+np.savetxt("./data/data_init/param.dat",init.param())
+np.savetxt("./data/data_init/a0.dat",np.array([init.a0]))
+np.savetxt("./data/data_init/q0.dat",np.array([init.q0]))

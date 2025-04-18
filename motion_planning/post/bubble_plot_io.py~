@@ -1,0 +1,104 @@
+# ### f
+# # set terminal epslatex lw 2 size 8cm,7cm "Helvetica,8pt" #color colortext
+# # set output './figures/io_dir.tex'
+ 
+# set xlabel '\(t\)' #offset 0,1,0
+# # set ylabel '\(\varepsilon\)' #offset 3,0,0
+
+# # set border lw 1
+# set key t r spacing 1.5
+
+# set yrange [-0.2:3.0]
+# # set format y "10^{%.0T}"
+# # set ytics 1e-6,1e-1 logscale
+
+# set xrange [0:8]
+# # set format x "%.0f"
+# set xtics (0,2,4,6,8) 
+
+# set grid ytics, xtics
+
+# q_steady=0.0107584
+# a_0 = 0.1
+# plot './data/data_solution/as0.dat' using 1:((1/a_0)*($2-1)) w lp lt 8 pt 6 ps 1 pi 5 lw 1 dt 1 title '$(A(0,t)-A_{0})/\Delta A$',\
+#      './data/data_solution/qs1.dat' using 1:((1/q_steady)*$2) w lp lt 8 pt 8 ps 1 pi 5 lw 1 dt 1 title '$Q(1,t)/Q_{s}$',\
+#      './data/data_solution/qs0.dat' using 1:((1/q_steady)*$2) w lp lt 8 pt 4 ps 1 pi 5 lw 1 dt 1 title '$Q(0,t)/Q_{s}$'
+
+# # q_steady=0.0107584
+# # a_0 = 0.1
+# # plot './data/data_solution/as0.dat' using 1:((1/a_0)*($2-1)) w l lt 8 lw 2 dt 1 title '$(A(0,t)-A_{0})/\Delta A$',\
+# #      './data/data_solution/qs1.dat' using 1:((1/q_steady)*$2) w l lt 8 lw 2 dt 2 title '$Q(1,t)/Q_{s}$',\
+# #      './data/data_solution/qs0.dat' using 1:((1/q_steady)*$2) w l lt 8 lw 2 dt 3 title '$Q(0,t)/Q_{s}$'
+     
+# pause -1
+
+
+
+
+# ### f
+# #set terminal epslatex lw 2 size 8cm,7cm "Helvetica,8pt" #color colortext
+# #set output './figures/u_var.tex'
+ 
+# set xlabel '\(t\)' #offset 0,1,0
+# set ylabel '\(u\)' #offset 3,0,0
+
+# # set border lw 1
+# set key c r spacing 1.5
+
+# #set yrange [1.0:1.00045]
+# # set format y "10^{%.0T}"
+# #set ytics (1,1.0001,1.0002,1.0003,1.0004)
+
+# #set xrange [0:0.003]
+# # set format x "%.0f"
+# #set xtics (0.001,0.002,0.003) 
+
+# set grid ytics, xtics
+
+# plot './data/data_solution/io3/as0_125.dat' using 1:(1*$2) w lp lt 2 pt 6 ps 1 pi 10 lw 1 dt 1 title '$u_{1}(t)$',\
+#      './data/data_solution/io3/as0_125.dat' using 1:(2*$2-0.1) w lp lt 2 pt 8 ps 1 pi 10 lw 1 dt 1 title '$2u_{1}(t)$',\
+#      './data/data_solution/io3/as0_125.dat' using 1:(4*$2-0.3) w lp lt 2 pt 4 ps 1 pi 10 lw 1 dt 1 title '$4u_{1}(t)$',\
+#      './data/data_solution/io3/as0_125.dat' using 1:2 w lp lt 8 pt 6 ps 1 pi 10 lw 1 dt 1 title '$u_{1}(t)$',\
+#      './data/data_solution/io3/as0_250.dat' using 1:2 w lp lt 8 pt 8 ps 1 pi 10 lw 1 dt 1 title '$u_{2}(t)$',\
+#      './data/data_solution/io3/as0_500.dat' using 1:2 w lp lt 8 pt 4 ps 1 pi 10 lw 1 dt 1 title '$u_{3}(t)$',\
+#      # './data/data_solution/io2/as0_50.dat' using 1:2 w lp lt 8 pt 10 ps 1 pi 10 lw 1 dt 1 title '$u_{50}(t)$',\
+#      # './data/data_solution/io2/as0_100.dat' using 1:2 w lp lt 8 pt 10 ps 1 pi 10 lw 1 dt 1 title '$u_{100}(t)$',\
+#      # './data/data_solution/io2/as0_1e3.dat' using 1:2 w lp lt 8 pt 10 ps 1 pi 10 lw 1 dt 1 title '$u_{1e3}(t)$',\
+#      # './data/data_solution/io2/as0_2e3.dat' using 1:2 w lp lt 8 pt 10 ps 1 pi 10 lw 1 dt 1 title '$u_{2e3}(t)$',\
+#      # './data/data_solution/io2/as0_2e3.dat' using 1:2 w lp lt 8 pt 10 ps 1 pi 10 lw 1 dt 1 title '$u_{3e3}(t)$',\
+#      # './data/data_solution/io2/as0_1e4.dat' using 1:2 w lp lt 8 pt 10 ps 1 pi 10 lw 1 dt 1 title '$u_{1e4}(t)$',\
+#      # './data/data_solution/io2/as0_1.dat' using 1:(5*$2-4) w lp lt 1 pt 8 ps 1 pi 10 lw 1 dt 1 title '$5u_{1}(t)$',\
+#      # './data/data_solution/io2/as0_1.dat' using 1:(10*$2-9) w lp lt 1 pt 4 ps 1 pi 10 lw 1 dt 1 title '$10u_{1}(t)$',\
+#      # './data/data_solution/io2/as0_1.dat' using 1:(50*$2-49) w lp lt 1 pt 10 ps 1 pi 10 lw 1 dt 1 title '$50u_{1}(t)$',\
+#      # './data/data_solution/io2/as0_1.dat' using 1:(100*$2-99) w lp lt 1 pt 10 ps 1 pi 10 lw 1 dt 1 title '$100u_{1}(t)$'
+     
+     
+# pause -1
+
+
+
+### f
+# set terminal epslatex lw 2 size 8cm,7cm "Helvetica,8pt" #color colortext
+# set output './figures/y_var.tex'
+ 
+set xlabel '\(t\)' #offset 0,1,0
+set ylabel '\(y\)' #offset 3,0,0
+
+# set border lw 1
+set key c r spacing 1.5
+
+# set yrange [0:0.032]
+# set format y "%.3f" #"10^{%.0T}"
+# set ytics (0,0.010,0.020,0.030)
+
+#set xrange [0:0.003]
+# set format x "%.0f"
+#set xtics (0.001,0.002,0.003) 
+
+set grid ytics, xtics
+
+plot './data/data_solution/io3/qs1_125.dat' using 1:2 w lp lt 8 pt 6 ps 1 pi 10 lw 1 dt 1 title '$y_{1}(t) = y(t)$',\
+     './data/data_solution/io3/qs1_250.dat' using 1:2 w lp lt 8 pt 8 ps 1 pi 10 lw 1 dt 1 title '$y_{2}(t) = 2y(t)$',\
+     './data/data_solution/io3/qs1_500.dat' using 1:2 w lp lt 8 pt 4 ps 1 pi 10 lw 1 dt 1 title '$y_{3}(t) = 4y(t)$',\
+     #'./data/data_solution/io2/qs1_50.dat' using 1:2 w lp lt 8 pt 10 ps 1 pi 10 lw 1 dt 1 title '$y_{50}(t) = 50y(t)$'
+pause -1

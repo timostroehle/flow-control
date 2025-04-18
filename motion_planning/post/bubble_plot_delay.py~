@@ -1,0 +1,23 @@
+### f
+# set terminal epslatex lw 2 size 8cm,7cm "Helvetica,8pt" #color colortext
+# set output './figures/io_dir.tex'
+ 
+set xlabel '\(t\)' #offset 0,1,0
+# set ylabel '\(\varepsilon\)' #offset 3,0,0
+
+# set border lw 1
+set key t r spacing 1.5
+
+#set yrange [-0.2:3.0]
+# set format y "10^{%.0T}"
+# set ytics 1e-6,1e-1 logscale
+
+#set xrange [0:8]
+# set format x "%.0f"
+#set xtics (0,2,4,6,8) 
+
+set grid ytics, xtics
+
+plot './data/data_solution/d.dat' using 1:2 w lp lt 8 lw 1 dt 1 title '$D(t)$'
+     
+pause -1

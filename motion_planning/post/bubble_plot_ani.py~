@@ -1,0 +1,68 @@
+# Animation
+set terminal gif animate delay 0.5 size 2560,2560
+set output "./bubble_flow.gif"
+n = 50
+set xrange [0.01:0.99]
+set yrange [-0.6:0.6] #[0.718:1.2]
+
+set cbrange [-0.005:0.035]
+set palette gray
+#set palette cubehelix negative
+unset colorbox
+set key autotitle columnhead
+unset key
+# unset tics
+# unset border
+# set label "P_1" at 0.93,-0.07 tc rgb "blue" center font "Helvetica,60" 
+# set label "P_2" at -0.07,0.93 tc rgb "blue" center font "Helvetica,60"
+# set title 'time '.ii font 'courierbold'
+
+do for [ii=2:n:1]{
+    jj=ii-2
+    set multiplot
+    fx(x) = x/100
+    fy(y) = y/50
+    g(x) = -x+1.5
+    plot "./qout.dat" matrix i jj u (fx($1)):(fy($2)):3 with image      
+    plot "./aout.dat" using 1:ii with filledcurves below y=2 fc "white",\
+         "./aout.dat" using 1:ii w l lt 8 lw 15,\
+         "./aout.dat" using 1:(g(column(ii))) with filledcurves above fc "white" ,\
+         "./aout.dat" using 1:(g(column(ii))) w l lt 8 lw 15
+    unset multiplot
+    }
+#
+
+# Animation
+set terminal gif animate delay 0.5 size 2560,2560
+set output "./bubble_velocity.gif"
+n = 50
+set xrange [0.01:0.99]
+set yrange [-0.6:0.6] #[0.718:1.2]
+set cbrange [-0.001:0.01]
+set palette gray
+# set palette cubehelix negative
+unset colorbox
+set key autotitle columnhead
+unset key
+# unset tics
+# unset border
+
+# set label "P_1" at 0.93,-0.07 tc rgb "blue" center font "Helvetica,60" 
+# set label "P_2" at -0.07,0.93 tc rgb "blue" center font "Helvetica,60"
+# set title 'time '.ii font 'courierbold'
+
+do for [ii=2:n:1]{
+    jj=ii-2
+    set multiplot
+    fx(x) = x/100
+    fy(y) = y/50
+    gpos(x) = (x/pi)**0.5
+    gneg(x) =-(x/pi)**0.5
+    plot "./vout.dat" matrix i jj u (fx($1)):(fy($2)):3 with image      
+    plot "./aout.dat" using 1:(gpos(column(ii))) with filledcurves below y=2 fc "white",\
+         "./aout.dat" using 1:(gpos(column(ii))) w l lt 8 lw 15,\
+         "./aout.dat" using 1:(gneg(column(ii))) with filledcurves above fc "white" ,\
+         "./aout.dat" using 1:(gneg(column(ii))) w l lt 8 lw 15
+    unset multiplot
+    }
+#

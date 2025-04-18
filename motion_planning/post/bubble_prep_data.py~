@@ -1,0 +1,77 @@
+import sys
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import scipy
+np.set_printoptions(precision=3, threshold=1e5, linewidth=300)
+
+# X0 = np.loadtxt("./data_40_300_inv_q_forced_beta_s05/data_solution/x0.dat")
+# X1 = np.loadtxt("./data_40_300_inv_q_forced_beta_s05/data_solution/X.dat")
+X0 = np.loadtxt("./data/data_solution/x0.dat")
+X1 = np.loadtxt("./data/data_solution/X.dat")
+X = np.append(X0,X1,axis=0)
+
+s = X[:,0]
+t = X[:,1]
+q = X[:,2]
+a = X[:,3]
+
+xi,eta = np.meshgrid(np.arange(0,1,0.01),np.arange(0,10,0.1))
+
+qn = scipy.interpolate.griddata((s,t), q, (xi,eta), method="cubic")
+an = scipy.interpolate.griddata((s,t), a, (xi,eta), method="cubic")
+"""compute mean velocity"""
+vn = np.array(an)
+for i in range(0,len(vn)):
+    for j in range(0,len(vn[0])):
+        vn[i,j] = qn[i,j]/an[i,j]
+        
+fig1, ax1 = plt.subplots(subplot_kw={"projection": "3d"})
+surf = ax1.plot_surface(xi, eta, an)
+
+fig2, ax2 = plt.subplots(subplot_kw={"projection": "3d"})
+surf = ax2.plot_surface(xi, eta, qn)
+
+fig3, ax3 = plt.subplots(subplot_kw={"projection": "3d"})
+surf = ax3.plot_surface(xi, eta, vn)
+
+file = open("./aout.dat", 'w')
+file.write(" ")
+file.close()
+aout = np.array([xi[0]]).T
+for i in range(0,len(an)):
+    aout = np.append(aout,np.array([an[i,:]]).T,axis=1)
+file = open("./aout.dat", 'a')
+np.savetxt(file, aout)
+file.close()
+
+file = open("./qout.dat", 'w')
+file.write(" ")
+file.close()
+for j in range(0,len(qn)):
+    q0 = np.array([qn[j]])
+    qout = np.append(q0,q0,axis=0)
+    for i in range(0,len(aout)):
+        qout = np.append(qout,q0,axis=0)
+    file = open("./qout.dat", 'a')
+    np.savetxt(file, qout)
+    file.write("\n")
+    file.write("\n")
+    file.close()
+
+file = open("./vout.dat", 'w')
+file.write(" ")
+file.close()
+for j in range(0,len(vn)):
+    v0 = np.array([vn[j]])
+    vout = np.append(v0,v0,axis=0)
+    for i in range(0,len(aout)):
+        vout = np.append(vout,v0,axis=0)
+    file = open("./vout.dat", 'a')
+    np.savetxt(file, vout)
+    file.write("\n")
+    file.write("\n")
+    file.close()
+
+
+plt.show()

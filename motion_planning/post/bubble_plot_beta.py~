@@ -1,0 +1,24 @@
+### f
+set terminal epslatex lw 2 size 8cm,3.5cm "Helvetica,8pt" #color colortext
+set output './figures/beta_dir.tex'
+ 
+set xlabel '\(s\)' #offset 0,1,0
+set ylabel '\(\beta\)' #offset 3,0,0
+
+# set border lw 1
+set key t r spacing 1.5
+unset key
+
+set yrange [0.25:0.56]
+# # set format y "10^{%.0T}"
+set ytics (0.3,0.4,0.5)
+
+set xrange [0:1]
+# # set format x "%.0f"
+set xtics (0,0.25,0.5,0.75,1.0) 
+
+set grid ytics, xtics
+
+plot './data/data_solution/beta/beta.dat' using 1:2 w l lt 8 lw 1 dt 1 title '$\beta(s)$',\
+         
+#pause -1
